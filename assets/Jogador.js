@@ -27,18 +27,39 @@ cc.Class({
         //         this._bar = value;
         //     }
         // },
+		
+		_acelerando:false,
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+    onLoad () {
+		cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.teclaPressionada, this)
+		cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.teclaSolta, this)
+	},
 
+	teclaPressionada: function(event){
+		
+		if(event.keyCode == cc.KEY.a){ //o cc.KEY.a é a biblioteca de teclas da coco
+			this._acelerando = true;
+		}
+	},
+	
+	teclaSolta: function(event){
+		
+		if(event.keyCode == cc.KEY.a){
+			this._acelerando = false;
+		}
+	},
+	
+	
     start () {
 
     },
 
     update (dt) {
-		this.node.x += 1;
-		this.node.y += 2;
+		if(this._acelerando){
+			this.node.x += 1;
+		}
 	},
 });
