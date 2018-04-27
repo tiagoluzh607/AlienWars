@@ -49,6 +49,7 @@ cc.Class({
 		posicaoMouse = new cc.Vec2(posicaoMouse.x, posicaoMouse.y); //transforma em um vetor
 		
 		let direcao = posicaoMouse.sub(this.node.position); // a direcao é a posição do mouse - posicao da nave
+		direcao = direcao.normalize(); //normaliza a direcao para andar sempre em 1px pois ele divide o vetor direcao por ele mesmo
 		this._direcao = direcao;
 	},
 	
