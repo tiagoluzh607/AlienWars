@@ -29,18 +29,33 @@ cc.Class({
         // },
 		
 		_acelerando:false,
+		_direcao: cc.Vec2,
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-		cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.teclaPressionada, this)
-		cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.teclaSolta, this)
+		cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.teclaPressionada, this); //dispara a funcao teclaPressionada quando qualquer tecla for precionada
+		cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.teclaSolta, this); //dispara a funcao teclaSolta quando qualquer tecla for solta
+		
+		
+		let canvas = cc.find("Canvas"); // retorna o node de canvas
+		canvas.on("mousemove", this.mudarDirecao, this); // dispara o a funcao mudarDirecao enquanto o mouse estiver no canvas "tela do jogo"
 	},
 
+	mudarDirecao: function(event){
+		
+		let posicaoMouse = event.getLocation(); //pega posicao x e y do mouse
+		posicaoMouse = new cc.Vec2(posicaoMouse.x, posicaoMouse.y); //transforma em um vetor
+		
+		let direcao = posicaoMouse.sub(this.node.position); // a direcao é a posição do mouse - posicao da nave
+		this._direcao = direcao;
+	},
+	
+	
 	teclaPressionada: function(event){
 		
-		if(event.keyCode == cc.KEY.a){ //o cc.KEY.a é a biblioteca de teclas da coco
+		if(event.keyCode == cc.KEY.a){ //verifica se a tecla presiionada foi o A o cc.KEY.a é a biblioteca de teclas da coco
 			this._acelerando = true;
 		}
 	},
@@ -59,7 +74,7 @@ cc.Class({
 
     update (dt) {
 		if(this._acelerando){
-			this.node.x += 1;
+			this.node.position = this.node.position.add(this._direcao); //pega posicao na nave hero e adiona a direcao para que ela vai;
 		}
 	},
 });
